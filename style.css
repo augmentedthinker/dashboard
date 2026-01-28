@@ -16,16 +16,59 @@ body {
 }
 
 .container {
-    width: 100%;
-    max-width: 800px;
+    width: 95%;
+    max-width: 1100px; /* Smaller to see more background animation */
     display: flex;
-    flex-direction: column;
-    background: rgba(22, 22, 22, 0.85); /* Surface Secondary with opacity */
+    flex-direction: row; /* Side-by-side layout */
+    background: rgba(22, 22, 22, 0.5); /* More transparent for better visibility of animations */
     backdrop-filter: blur(20px); /* Glassmorphism blur */
     border: 1px solid #262626; /* Border/Stroke */
     border-radius: 24px; /* Bento Card styling */
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     overflow: hidden; /* Clips children to the rounded corners */
+    height: 80vh; /* Reduced height to frame the app with the background */
+    align-self: center;
+}
+
+/* Left side: Chat */
+#chat-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #262626;
+    min-width: 300px; /* Allow it to shrink a bit more */
+}
+
+/* Right side: Preview */
+#preview-pane {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease; /* Smooth animation for opening/closing */
+    overflow: hidden;
+}
+
+/* Collapsed state for the preview window */
+#preview-pane.collapsed {
+    flex: 0;
+    min-width: 0;
+    border: none;
+}
+
+.preview-header {
+    padding: 1rem;
+    background: rgba(22, 22, 22, 0.8);
+    border-bottom: 1px solid #262626;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#preview-frame {
+    flex: 1;
+    border: none;
+    background: white; /* Standard browser background */
 }
 
 header {
@@ -160,6 +203,56 @@ footer {
     background: rgba(255,255,255,0.05);
 }
 
+/* Microphone Button Styling */
+#mic-btn {
+    background: transparent;
+    border: 1px solid #262626;
+    color: #FFFFFF;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+}
+
+#mic-btn:hover { background: rgba(255,255,255,0.1); }
+
+#mic-btn.listening {
+    background: #D1F531;
+    color: #000000;
+    box-shadow: 0 0 15px rgba(209, 245, 49, 0.5);
+}
+
+/* Generated Image Styling */
+.generated-image {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 10px;
+    border: 1px solid #262626;
+}
+
+/* Text-to-Speech Button */
+.tts-btn {
+    background: transparent;
+    border: none;
+    color: #8E8E8E;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-top: 8px;
+    padding: 4px;
+    transition: color 0.2s;
+    display: block; /* Forces it to a new line */
+}
+
+.tts-btn:hover {
+    color: #D1F531;
+}
+
 /* Markdown Styling within Chat Bubbles */
 .message p {
     margin: 0 0 0.5rem 0;
@@ -189,4 +282,50 @@ footer {
     background: transparent;
     padding: 0;
     color: #D1F531; /* Accent color for code text */
+}
+
+/* Run Code Button */
+.run-code-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    background: #D1F531;
+    color: #000;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* Background Animation Canvas */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Places it behind the chat container */
+    pointer-events: none; /* Allows clicks to pass through to the UI */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    body {
+        padding: 0; /* Remove padding on mobile for full immersion */
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh; /* Full height on mobile */
+        max-width: none;
+        border-radius: 0;
+        border: none;
+        flex-direction: column; /* Stack vertically */
+    }
+
+    #chat-pane {
+        border-right: none;
+        border-bottom: 1px solid #262626;
+        min-width: 0;
+    }
 }
